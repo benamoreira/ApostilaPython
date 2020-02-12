@@ -42,7 +42,21 @@ class DataTable:
         self._columns = []
         self._references = []
         self._referenced = []
-        self.data = []
+        self._data = []
+
+    def _get_name(self):
+        print("Getter Executado")
+        return self._name
+
+    def _set_name(self, _name):
+        print("Setter Executado")
+        self._name = _name
+
+    def _del_name(self):
+        print("Deletter Executado!")
+        raise AttributeError("Não pode deleter esse atributo")
+
+    name = property(_get_name, _set_name, _del_name)
 
     def add_column(self, name, kind, description=""):
         column = Column(name, kind, description=description)
@@ -97,21 +111,22 @@ class Column:
         _str = "Col: {} : {} {}".format(self._name, self._kind, self._description)
         return _str
 
-    def validate(self, data):
-        if self._kind == 'bigint':
-            if isinstance(data,int):
+    def _validate(cls, kind, data):
+        if kind == 'bigint':
+            if isinstance(data, int):
                 return True
             return False
-        elif self._kind =='varchar':
+        elif kind =='varchar':
             if isinstance(data, str):
                 return True
             return False
-        elif self._kind =='numeric':
+        elif kind =='numeric':
             try:
                 val = Decimal(data)
             except:
                 return False
             return True
+    validate = classmethod(_validate)
 
 
 
