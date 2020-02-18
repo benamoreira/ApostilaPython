@@ -1,4 +1,5 @@
-from decimal import Decimal
+import decimal
+import unittest
 
 class Relationship:
     """ Classe que representa um relacionamento entre DAtaTables
@@ -111,7 +112,9 @@ class Column:
         _str = "Col: {} : {} {}".format(self._name, self._kind, self._description)
         return _str
 
-    def _validate(cls, kind, data):
+
+    @staticmethod
+    def _validate(kind, data):
         if kind == 'bigint':
             if isinstance(data, int):
                 return True
@@ -122,12 +125,10 @@ class Column:
             return False
         elif kind =='numeric':
             try:
-                val = Decimal(data)
+                val = decimal.Decimal(data)
             except:
                 return False
             return True
-    validate = classmethod(_validate)
-
 
 
 class PrimaryKey(Column):
